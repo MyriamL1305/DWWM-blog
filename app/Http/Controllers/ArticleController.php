@@ -10,6 +10,6 @@ class ArticleController extends Controller
 {
     public function index() : View {
         $articles = Article::all();
-        return view('articles', ['articles' => $articles]);
+        return view('articles-list', ['articles' => $articles]);
     }
 }
