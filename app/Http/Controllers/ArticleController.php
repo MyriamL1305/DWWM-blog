@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
-    //
+    public function index() : View {
+        $articles = Article::all();
+        return view('articles', ['articles' => $articles]);
+    }
 }
