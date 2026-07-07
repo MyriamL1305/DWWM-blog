@@ -19,7 +19,8 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable();
             $table->longText('content');
             $table->timestamps();
-
+            $table->ForeignId('category_id')->constrained()->restrictOnDelete();
+            $table->ForeignId('user_id')->constrained()->restrictOnDelete();
 
         });
     }
