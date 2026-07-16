@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <div style="">NAVBAR</div>
+    <div style="">@include('layout.navbar')</div>
 
     <main>
         @yield('content')
