@@ -55,7 +55,7 @@ class ArticleController extends Controller
     {
         $categories = Category::orderBy('name')->get();
 
-        return view('admin.articles.form', compact('article', 'categories'));
+        return view('admin.articles-form', compact('article', 'categories'));
     }
 
     public function update(Request $request, Article $article): RedirectResponse

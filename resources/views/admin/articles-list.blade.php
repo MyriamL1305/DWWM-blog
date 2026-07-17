@@ -34,7 +34,7 @@
                     </td>
                     <td class="py-3">{{ $article->created_at->format('d/m/Y') }}</td>
                     <td class="py-3 space-x-2">
-                        <a href="#" title="Modifier">✏️</a>
+                        <<a href="{{ route('admin.articles.edit', $article) }}" title="Modifier">✏️</a>
                         <a href="#" title="Supprimer">🗑️</a>
                         <a href="#" title="Publierr">➤</a>
                     </td>
