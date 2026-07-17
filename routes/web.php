@@ -18,8 +18,16 @@ Route::get('/articles/{id}',[ArticleController::class, 'show'])->name('articles.
 
 // Routes admin
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/articles', [AdminArticleController::class, 'index'])->name('articles.index');
-});
+    //Route::resource() génère aà lui seuk les
+    // Génère automatiquement :
+        // GET    /admin/articles              admin.articles.index
+        // GET    /admin/articles/create        admin.articles.create
+        // POST   /admin/articles               admin.articles.store
+        // GET    /admin/articles/{article}/edit admin.articles.edit
+        // PUT    /admin/articles/{article}      admin.articles.update
+        // DELETE /admin/articles/{article}      admin.articles.destroy
+    Route::resource('articles', AdminArticleController::class);
+});;
 
 // Routes générées par Breeze
 Route::get('/dashboard', function () {

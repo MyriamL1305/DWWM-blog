@@ -18,6 +18,6 @@ class ArticleController extends Controller
     // Afficher le détail d'un seul article
     public function show(int $id): View {
     $article = Article::with(['category'])->findOrFail($id);
-    return view('article-detail', compact('article'));
+    return view('articles-details', compact('article'));
 }
 }

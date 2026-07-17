@@ -17,7 +17,7 @@
 </div>
 
 <div>
-    <p>Contenu complet</p>
+
     <p>{{ $article->content }}</p>
 </div>
 
