@@ -27,6 +27,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         // PUT    /admin/articles/{article}      admin.articles.update
         // DELETE /admin/articles/{article}      admin.articles.destroy
     Route::resource('articles', AdminArticleController::class);
+    
+Route::patch('/articles/{article}/publish', [AdminArticleController::class, 'publish'])
+    ->name('articles.publish');
+
 });;
 
 // Routes générées par Breeze

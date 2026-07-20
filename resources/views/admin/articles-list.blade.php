@@ -1,52 +1,67 @@
- @extends('layout.app')
- @section('titre', 'Admin Liste des articles')
- @section('content')
+@extends('layout.app')
+@section('titre', 'Admin Liste des articles')
+@section('content')
 
- {{--Titre + bouton nouvel article--}}
+<div class="max-w-5xl mx-auto px-4 py-8">
+
+    {{-- Titre + bouton nouvel article --}}
     <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2x1 font-bold">Articles</h1>
-        <a href="#" class="bg-black text-white px-4 py-2 rounded texy-sm">+ Nouvel article</a>
+        <h1 class="text-2xl font-bold">Articles</h1>
+        <a href="{{ route('admin.articles.create') }}" class="bg-black text-white px-4 py-2 rounded text-sm">
+            + Nouvel article
+        </a>
     </div>
 
-    {{--tableau des articles --}}
-    <table class="w-full text-left text-sm border-collapse">
-        <thead>
-            <tr class="border-b text-gray-500">
-                <th class="py-2">Titre</th>
-                <th class="py-2">Catégorie</th>
-                <th class="py-2">Statut</th>
-                <th class="py-2">Date</th>
-                <th class="py-2">Actions</th>
+    @if (session('success'))
+        <div class="mb-4 p-3 bg-green-100 text-green-800 rounded text-sm">
+            {{ session('success') }}
+        </div>
+    @endif
 
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($articles as $article) 
-                <tr>
-                    <td class="py-3">{{ $article->title }}</td>
-                    <td class="py-3">{{ $article->category->name }}</td>
-                    <td class="py-3">
-                        @if($article->status === 'published')
-                            <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span> Publié
-                        @else
-                            <span class="inline-block w-2 h-2 rounded-full bg-gray-400 mr-1"></span> Brouillon
-                        @endif
-                    </td>
-                    <td class="py-3">{{ $article->created_at->format('d/m/Y') }}</td>
-                    <td class="py-3 space-x-2">
-                        <<a href="{{ route('admin.articles.edit', $article) }}" title="Modifier">✏️</a>
-                        <a href="#" title="Supprimer">🗑️</a>
-                        <a href="#" title="Publierr">➤</a>
-                    </td>
+    {{-- tableau des articles : cadre + traits entre colonnes/lignes, contenu dans max-w-5xl --}}
+    <div class="border border-gray-200 rounded-lg overflow-hidden">
+        <table class="w-full text-left text-sm border-collapse">
+            <thead class="bg-gray-50">
+                <tr class="border-b border-gray-200 text-gray-500">
+                    <th class="py-3 px-4">Titre</th>
+                    <th class="py-3 px-4 border-l border-gray-200">Catégorie</th>
+                    <th class="py-3 px-4 border-l border-gray-200 w-28">Statut</th>
+                    <th class="py-3 px-4 border-l border-gray-200 w-32">Date</th>
+                    <th class="py-3 px-4 border-l border-gray-200 w-24">Actions</th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="py-4 text-gray-500">Aucun article pour le moment.</td>
-                </tr>
+            </thead>
+            <tbody>
+                @forelse ($articles as $article)
+                    <tr class="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+                        <td class="py-3 px-4">{{ $article->title }}</td>
+                        <td class="py-3 px-4 border-l border-gray-100">{{ $article->category->name ?? '—' }}</td>
+                        <td class="py-3 px-4 border-l border-gray-100">
+                            @if($article->status === 'published')
+                                <span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span> Publié
+                            @else
+                                <span class="inline-block w-2 h-2 rounded-full bg-gray-400 mr-1"></span> Brouillon
+                            @endif
+                        </td>
+                        <td class="py-3 px-4 border-l border-gray-100">{{ $article->created_at->format('d/m/Y') }}</td>
+                        <td class="py-3 px-4 border-l border-gray-100">
+                            <div class="flex items-center gap-2">
+                                <a href="{{ route('admin.articles.edit', $article) }}" title="Modifier">✏️</a>
+                                <form action="{{ route('admin.articles.destroy', $article) }}" method="POST" onsubmit="return confirm('Supprimer cet article ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" title="Supprimer">🗑️</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="py-4 px-4 text-gray-500">Aucun article pour le moment.</td>
+                    </tr>
                 @endforelse
-            
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
     <div class="flex items-center justify-center gap-4 mt-8">
 
@@ -65,4 +80,5 @@
         @endif
 
     </div>
+</div>
 @endsection
