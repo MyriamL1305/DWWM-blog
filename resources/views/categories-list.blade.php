@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories List</title>
-</head>
-<body>
+@extends('layout.app')
+@section('titre', 'Liste de catégories')
+@section('content')
      <h1>Categories List</h1>
     @foreach($categories as $category)
         <div>
-            <p>{{ $category->name }}</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>{{ $category->name }}</h2>
+                <span>{{ $category->articles->count() }} articles</span>
+
+            </div>
+            
         </div>
     @endforeach 
-</body>
-</html>
+@endsection
