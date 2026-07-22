@@ -61,15 +61,19 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
-        @if (count($articles) = 0)
-        $category->delete();
-        return redirect()
+        if ($category->articles()->count() === 0) {
+            $category->delete();
+            return redirect()
+                ->route('admin.categories.index')
+                ->with('success', 'Catégorie supprimée');
+        }
+        
+        else {
+            return redirect()
             ->route('admin.categories.index')
-            ->with('success', 'Catégorie supprimée');
-        @else
-        return redirect()
-            ->route('admin.categories.index')
-            ->with('!success', 'Vous ne pouvez pas supprimer une catégories ayant des articles');
+            ->with('error', 'Vous ne pouvez pas supprimer une catégories ayant des articles');
+        }
+        
     }
 
     private function validatedData(Request $request): array
