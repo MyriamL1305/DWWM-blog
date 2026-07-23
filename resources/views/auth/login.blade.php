@@ -1,52 +1,81 @@
-{{--
-    Vue de connexion, redessinée selon la maquette (carte centrée bordée,
-    titre "Se connecter", champs Email/Mot de passe, bouton noir, lien vers
-    l'inscription en bas).
+@extends('layout.auth')
+@section('titre', 'Créer un compte')
+@section('content')
 
-    <x-guest-layout> est le composant Blade fourni par Breeze pour les pages
-    non-authentifiées (login/register) — il gère juste le fond de page, tout
-    le contenu visible est ici. Les noms des champs (email, password) et
-    l'action du formulaire (route('login')) ne doivent pas changer : c'est
-    ce que App\Http\Controllers\Auth\AuthenticatedSessionController attend
-    pour traiter la connexion.
---}}
-<x-guest-layout>
-    <div class="w-full max-w-md mx-auto border border-gray-300 rounded-lg p-8">
-        <h1 class="text-2xl font-bold mb-6">Se connecter</h1>
+<div class="max-w-2xl mx-auto mt-10 border border-gray-300 rounded-lg p-10">
+    <h1 class="text-3xl font-bold text-center mb-2">Créer un nouveau compte</h1>
+    <p class="text-center text-sm text-gray-600 mb-8">
+        Vous êtes déjà inscrit ?
+        <a href="{{ route('login') }}" class="underline">&rarr; Se connecter</a>
+    </p>
 
-        {{-- Message de statut (ex: après une réinitialisation de mot de passe réussie) --}}
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+    <form method="POST" action="{{ route('register') }}">
+        @csrf
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
-
-            {{-- Email --}}
-            <div class="mb-4">
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            {{-- Prénom --}}
+            <div>
+                <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
                 <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
+                    id="firstname"
+                    type="text"
+                    name="firstname"
+                    value="{{ old('firstname') }}"
                     required
                     autofocus
-                    autocomplete="username"
-                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm @error('email') border-red-500 @enderror"
+                    autocomplete="given-name"
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm @error('firstname') border-red-500 @enderror"
                 >
-                @error('email')
+                @error('firstname')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
 
+            {{-- Nom --}}
+            <div>
+                <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                <input
+                    id="lastname"
+                    type="text"
+                    name="lastname"
+                    value="{{ old('lastname') }}"
+                    required
+                    autocomplete="family-name"
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm @error('lastname') border-red-500 @enderror"
+                >
+                @error('lastname')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
+
+        {{-- Email --}}
+        <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+                id="email"
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+                required
+                autocomplete="username"
+                class="w-full border border-gray-300 rounded px-3 py-2 text-sm @error('email') border-red-500 @enderror"
+            >
+            @error('email')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
             {{-- Mot de passe --}}
-            <div class="mb-6">
+            <div>
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
                 <input
                     id="password"
                     type="password"
                     name="password"
                     required
-                    autocomplete="current-password"
+                    autocomplete="new-password"
                     class="w-full border border-gray-300 rounded px-3 py-2 text-sm @error('password') border-red-500 @enderror"
                 >
                 @error('password')
@@ -54,23 +83,27 @@
                 @enderror
             </div>
 
-            {{--
-                "Se souvenir de moi" retiré pour coller exactement à la maquette.
-                Le contrôleur Breeze le gère déjà si tu veux le remettre plus tard :
-                <label class="inline-flex items-center text-sm mb-4">
-                    <input type="checkbox" name="remember" class="mr-2">
-                    Se souvenir de moi
-                </label>
-            --}}
+            {{-- Confirmer le mot de passe --}}
+            <div>
+                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirmer le mot de passe</label>
+                <input
+                    id="password_confirmation"
+                    type="password"
+                    name="password_confirmation"
+                    required
+                    autocomplete="new-password"
+                    class="w-full border border-gray-300 rounded px-3 py-2 text-sm @error('password_confirmation') border-red-500 @enderror"
+                >
+                @error('password_confirmation')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
 
-            <button type="submit" class="w-full bg-black text-white py-2 rounded text-sm">
-                Se connecter
-            </button>
+        <button type="submit" class="w-full bg-black text-white py-2 rounded text-sm">
+            S'inscrire
+        </button>
+    </form>
+</div>
 
-            <p class="mt-4 text-sm text-gray-600">
-                Pas encore de compte ?
-                <a href="{{ route('register') }}" class="underline">&rarr; S'inscrire</a>
-            </p>
-        </form>
-    </div>
-</x-guest-layout>
+@endsection
